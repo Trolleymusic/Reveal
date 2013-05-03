@@ -5,6 +5,8 @@
 
 	$('[data-reveal]').Reveal();
 
+	Now supports reveal on touchMove
+
 ## To do:
 
 * Add some more comments.

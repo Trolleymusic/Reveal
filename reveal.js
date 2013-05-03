@@ -58,10 +58,19 @@
 				_elements.reverse();
 				_offsets.reverse();
 
-				$(window).on('scroll', function () {
-					// I'm passing these now so that we don't have to reference $(window) again
-					r.onScroll($(this).scrollTop(), $(this).height());
-				});
+				if (Modernizr.touch) {
+					document.addEventListener('touchmove', function () {
+						r.onScroll(window.scrollY, (!(window.orientation % 180) ? screen.availWidth : screen.availHeight));
+					}, false);
+
+				} else {
+					$(window).on('scroll', function () {
+						// I'm passing these now so that we don't have to reference $(window) again
+						r.onScroll($(this).scrollTop(), $(this).height());
+					});
+				}
+				
+				
 			}
 			
 			this.Threshold = function (scrollTop, windowH) {
