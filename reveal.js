@@ -12,7 +12,9 @@
 				var r,
 					selector,
 					windowH,
-					threshold;
+					threshold,
+					touchScrollHandler,
+					touchScrollTimer;
 				
 				r = this;
 				
@@ -59,9 +61,12 @@
 				_offsets.reverse();
 
 				if (Modernizr.touch) {
-					document.addEventListener('touchmove', function () {
+					touchScrollHandler = function () {
 						r.onScroll(window.scrollY, (!(window.orientation % 180) ? screen.availWidth : screen.availHeight));
-					}, false);
+					}
+					
+					document.addEventListener('touchmove', touchScrollHandler, false);
+					document.addEventListener('touchend', function () { requestAnimationFrame(touchScrollHandler); }, false);
 
 				} else {
 					$(window).on('scroll', function () {
@@ -74,7 +79,9 @@
 			}
 			
 			this.Threshold = function (scrollTop, windowH) {
-				return scrollTop + windowH + (_scrollPadding || 0);
+				var t = scrollTop + windowH + (_scrollPadding || 0);
+				$('#threshold').css('top', t);
+				return t;
 			}
 			
 			this.onScroll = function (scrollTop, windowH) {
